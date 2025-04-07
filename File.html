@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manipulação de iFrame do Looker</title>
+    <style>
+      .data-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .data-container label {
+        margin-right: 10px;
+      }
+      .data-container button {
+        margin-left: 10px;
+      }
+      .iframe-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .iframe-lookers {
+        margin: 10px;
+      }
+      .result-container {
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Campo para o usuário inserir a data (Filtro 1) -->
+    <div class="data-container">
+      <label for="data_inicio_1">Data Início:</label>
+      <input type="date" id="data_inicio_1" name="data_inicio_1" />
+      <label for="data_fim_1">Data Fim:</label>
+      <input type="date" id="data_fim_1" name="data_fim_1" />
+      <button id="ativar_1">Ativar Filtro</button>
+    </div>
+
+    <!-- Lista de iframes -->
+    <div class="iframe-container">
+      <iframe
+        class="iframe-lookers"
+        data-param="Período Recusa"
+        src="https://loggi.looker.com/embed/dashboards/12626?Per%C3%ADodo+Recusa=2024%2F12%2F30+to+2025%2F01%2F05&Destino+-+Base+que+recusou+o+pacote=&Origem+-+Base+que+ensacou+o+pacote=Cajamar%2CCajamar+2&Embarcador=&Cust%C3%B3dia+Recusa=&Package+ID=&J%C3%A1+virou+extravio%3F+%28Yes+%2F+No%29=&Regional+Origem=&First+LSD+Status=&Regional+Destino="
+        width="1400"
+        height="600"
+        frameborder="1"
+      ></iframe>
+
+      <iframe
+        class="iframe-lookers"
+        data-param="Data da Avaria"
+        src="https://loggi.looker.com/embed/dashboards/13742?Tipo+de+Opera%C3%A7%C3%A3o=&Regional=&Nome+da+Base=&+%C3%89+Rerversa+%28Sim%2FN%C3%A3o%29=&Embarcador=&Data=Date&Base=CJ2"
+        width="1400"
+        height="600"
+        frameborder="1"
+      ></iframe>
+
+      <iframe
+        class="iframe-lookers"
+        data-param="Entrou em risco Date"
+        src="https://loggi.looker.com/embed/dashboards/13284?Entrou+em+risco+Date+=2024%2F12%2F30+to+2025%2F01%2F05&TISM+-+Base+Destino=CJ2&Dias+em+risco=%3E1&TISM+-+Origem=&Dias+desde+ultima+movimenta%C3%A7%C3%A3o=%3E2"
+        width="1400"
+        height="600"
+        frameborder="1"
+      ></iframe>
+
+      <iframe
+        class="iframe-lookers"
+        data-param="Data da Avaria"
+        src="https://loggi.looker.com/embed/dashboards/15101?Data+da+Avaria=2025%2F03%2F13+to+2025%2F03%2F13&Embarcador+%28Cliente%29=&ID+do+pacote=&Respons%C3%A1vel+=CJ2&Reportado+pelo%3A=&Regional="
+        width="1400"
+        height="600"
+        frameborder="1"
+      ></iframe>
+    </div>
+
+    <script>
+      function formatarData(data) {
+        if (!data) return "";
+        const partes = data.split("-");
+        return `${partes[0]}/${partes[1]}/${partes[2]}`;
+      }
+
+      function aplicarFiltro(dataInicio, dataFim, iframe) {
+        const url = new URL(iframe.src);
+        const params = new URLSearchParams(url.search);
+        const campoDataEsperado = iframe.getAttribute("data-param").trim();
+        let keyFound = campoDataEsperado;
+        for (let key of params.keys()) {
+          if (key.trim() === campoDataEsperado) {
+            keyFound = key;
+            break;
+          }
+        }
+
+        if (dataInicio && dataFim) {
+          params.set(keyFound, `${dataInicio} to ${dataFim}`);
+        } else if (dataInicio) {
+          params.set(keyFound, dataInicio);
+        } else if (dataFim) {
+          params.set(keyFound, `to ${dataFim}`);
+        }
+
+        const novoUrl = url.origin + url.pathname + "?" + params.toString();
+        iframe.src = novoUrl;
+      }
+
+      document.getElementById("ativar_1").addEventListener("click", () => {
+        const dataInicio = formatarData(
+          document.getElementById("data_inicio_1").value
+        );
+        const dataFim = formatarData(
+          document.getElementById("data_fim_1").value
+        );
+        document
+          .querySelectorAll(".iframe-lookers")
+          .forEach((iframe) => aplicarFiltro(dataInicio, dataFim, iframe));
+      });
+    </script>
+  </body>
+</html>
