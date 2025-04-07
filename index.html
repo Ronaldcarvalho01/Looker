@@ -5,28 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manipulação de iFrame do Looker</title>
     <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: sans-serif;
+      }
+
       .data-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        gap: 10px;
       }
+
       .data-container label {
-        margin-right: 10px;
+        margin-right: 5px;
       }
-      .data-container button {
-        margin-left: 10px;
-      }
+
       .iframe-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: calc(100vh - 120px); /* Altura total menos espaço para inputs */
+        gap: 20px;
+        overflow-y: auto;
+        padding-bottom: 20px;
       }
+
       .iframe-lookers {
-        margin: 10px;
+        width: 90%;
+        height: 25%; /* 4 iframes => 25% cada */
+        border: 1px solid #ccc;
       }
-      .result-container {
-        margin-top: 20px;
-        text-align: center;
+
+      @media (max-width: 768px) {
+        .iframe-lookers {
+          height: auto;
+          min-height: 300px;
+        }
       }
     </style>
   </head>
@@ -46,8 +66,6 @@
         class="iframe-lookers"
         data-param="Período Recusa"
         src="https://loggi.looker.com/embed/dashboards/12626?Per%C3%ADodo+Recusa=2024%2F12%2F30+to+2025%2F01%2F05&Destino+-+Base+que+recusou+o+pacote=&Origem+-+Base+que+ensacou+o+pacote=Cajamar%2CCajamar+2&Embarcador=&Cust%C3%B3dia+Recusa=&Package+ID=&J%C3%A1+virou+extravio%3F+%28Yes+%2F+No%29=&Regional+Origem=&First+LSD+Status=&Regional+Destino="
-        width="1400"
-        height="600"
         frameborder="1"
       ></iframe>
 
@@ -55,8 +73,6 @@
         class="iframe-lookers"
         data-param="Data da Avaria"
         src="https://loggi.looker.com/embed/dashboards/13742?Tipo+de+Opera%C3%A7%C3%A3o=&Regional=&Nome+da+Base=&+%C3%89+Rerversa+%28Sim%2FN%C3%A3o%29=&Embarcador=&Data=Date&Base=CJ2"
-        width="1400"
-        height="600"
         frameborder="1"
       ></iframe>
 
@@ -64,8 +80,6 @@
         class="iframe-lookers"
         data-param="Entrou em risco Date"
         src="https://loggi.looker.com/embed/dashboards/13284?Entrou+em+risco+Date+=2024%2F12%2F30+to+2025%2F01%2F05&TISM+-+Base+Destino=CJ2&Dias+em+risco=%3E1&TISM+-+Origem=&Dias+desde+ultima+movimenta%C3%A7%C3%A3o=%3E2"
-        width="1400"
-        height="600"
         frameborder="1"
       ></iframe>
 
@@ -73,8 +87,6 @@
         class="iframe-lookers"
         data-param="Data da Avaria"
         src="https://loggi.looker.com/embed/dashboards/15101?Data+da+Avaria=2025%2F03%2F13+to+2025%2F03%2F13&Embarcador+%28Cliente%29=&ID+do+pacote=&Respons%C3%A1vel+=CJ2&Reportado+pelo%3A=&Regional="
-        width="1400"
-        height="600"
         frameborder="1"
       ></iframe>
     </div>
