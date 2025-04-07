@@ -10,6 +10,7 @@
         margin: 0;
         padding: 0;
         height: 100%;
+        font-family: Arial, sans-serif;
       }
 
       .data-container {
@@ -31,7 +32,6 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        height: calc(100vh - 80px); /* altura total da tela menos área do filtro */
         gap: 10px;
         padding: 10px 0;
         box-sizing: border-box;
@@ -39,7 +39,7 @@
 
       .iframe-lookers {
         width: 90%;
-        flex: 1;
+        height: 90vh;
         border: 1px solid #ccc;
       }
     </style>
@@ -117,15 +117,11 @@
       }
 
       document.getElementById("ativar_1").addEventListener("click", () => {
-        const dataInicio = formatarData(
-          document.getElementById("data_inicio_1").value
+        const dataInicio = formatarData(document.getElementById("data_inicio_1").value);
+        const dataFim = formatarData(document.getElementById("data_fim_1").value);
+        document.querySelectorAll(".iframe-lookers").forEach((iframe) =>
+          aplicarFiltro(dataInicio, dataFim, iframe)
         );
-        const dataFim = formatarData(
-          document.getElementById("data_fim_1").value
-        );
-        document
-          .querySelectorAll(".iframe-lookers")
-          .forEach((iframe) => aplicarFiltro(dataInicio, dataFim, iframe));
       });
     </script>
   </body>
